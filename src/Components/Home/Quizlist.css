@@ -1,0 +1,95 @@
+.logoutBtn {
+  /* border-style: solid; */
+  position: absolute;
+  right: 20px;
+}
+.logoutBtn button {
+  margin-top: 11px;
+  width: 120px;
+  background-color: #333333;
+  color: white;
+  font-family: cursive;
+  border-radius: 5px;
+}
+.logoutBtn button:hover {
+  background-color: darkgray;
+  color: black;
+}
+
+.quizDiv {
+  text-align: center;
+}
+
+/* flipcard css */
+
+.flip-card {
+  background-color: transparent;
+  width: 300px;
+  height: 300px;
+  border: 1px solid #f1f1f1;
+  display: inline-block;
+  margin: 10px;
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+  /* background-color: #bbb; */
+  /* background-color: rgb(228, 228, 228); */
+  background-color: #ffffff;
+  color: black;
+}
+
+/* Style the back side */
+.flip-card-back {
+  /* background-color: dodgerblue; */
+  background-color: #13a89e;
+  color: white;
+  padding-top: 50px;
+  transform: rotateY(180deg);
+}
+
+#cardLogo {
+  width: 300px;
+  height: 300px;
+  padding: 20px;
+}
+
+#takeQuizBtn:hover {
+  background-color: rgb(202, 199, 199);
+}
+
+@media (max-width: 380px) {
+  .flip-card {
+    width: 230px;
+    height: 250px;
+  }
+  #cardLogo {
+    width: 230px;
+    height: 230px;
+  }
+}
