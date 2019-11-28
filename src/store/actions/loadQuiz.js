@@ -1,4 +1,3 @@
-// import firebase from "../../Config/firebase";
 import * as firebase from "firebase";
 import Swal from "sweetalert2";
 
@@ -29,10 +28,10 @@ export const loadQuiz = data => {
   };
 };
 
-export const takeQuiz = id => {
+export const takeQuiz = index => {
   return {
     type: "TAKE_QUIZ",
-    payload: id
+    payload: index
   };
 };
 
@@ -53,9 +52,6 @@ export const updateQuiz = data => {
   };
 };
 
-// export const getAssignQuizes =(userId)=>async dispatch=>{
-//   await firebase.firestore().collection("users").doc(userId).get();
-// }
 export const getAssignQuizes = () => async dispatch => {
   const uid = await firebase
     .firestore()
@@ -73,37 +69,46 @@ export const getAssignQuizes = () => async dispatch => {
     .doc(data.userId)
     .get();
 
-  // quizData = await quizData.assignedQuiz;
-  let quizIDs = quizData.data().assignedQuiz || [];
-  console.log(quizIDs);
+  console.log(quizData.data().quizAssigned);
 
-  if (quizIDs[0] !== undefined) {
-    let quizIDsArr = [];
-    quizIDs.map(data => quizIDsArr.push(data.quizId));
-    console.log(quizIDsArr);
-
-    await firebase
-      .firestore()
-      .collection("userQuiz")
-      .onSnapshot(querySnapshot => {
-        const quiz = [];
-
-        querySnapshot.forEach(item => {
-          // console.log(item.id);
-          // console.log(item.data());
-          quizIDsArr.map(id => {
-            if (id == item.id) {
-              console.log("push");
-              quiz.push({ id: item.id, ...item.data() });
-            }
-          });
-        });
-        console.log(quiz);
-        dispatch({ type: "SAVE_ASSIGNQUIZES_DATA", payload: quiz });
-      });
-  } else {
-    Swal.fire("Warning", "No Quiz Assigned Yet", "warning");
+  let quizIDsArr = [];
+  for (let quizIDs in quizData.data().quizAssigned) {
+    console.log(quizData.data().quizAssigned[quizIDs]);
+    if (quizData.data().quizAssigned[quizIDs] !== undefined) {
+      // if (quizData.data().quizAssigned[quizIDs].quizTaken === false) {
+      // console.log(quizData.data().quizAssigned[quizIDs]);
+      // console.log("Not taken Quiz");
+      quizIDsArr.push(quizData.data().quizAssigned[quizIDs].quizId);
+      // }
+    } else {
+      setTimeout(() => {
+        Swal.fire("Warning", "No Quiz Assigned Yet", "warning");
+      }, 2000);
+    }
   }
+
+  console.log(quizIDsArr);
+
+  await firebase
+    .firestore()
+    .collection("userQuiz")
+    .onSnapshot(querySnapshot => {
+      const quiz = [];
+
+      querySnapshot.forEach(item => {
+        console.log(item.data());
+        // console.log(item.data());
+        quizIDsArr.map(id => {
+          if (id == item.id) {
+            console.log("push");
+            console.log(item.data());
+            quiz.push({ id: item.id, ...item.data() });
+          }
+        });
+      });
+      console.log(quiz);
+      dispatch({ type: "SAVE_ASSIGNQUIZES_DATA", payload: quiz });
+    });
 };
 
 export const getQuizes = () => async dispatch => {

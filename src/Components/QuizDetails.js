@@ -5,7 +5,8 @@ import { connect } from "react-redux";
 
 import Quizpage from "./Quizpage";
 
-import { currQuizObj, currQuizTitle } from "../store/actions"; //quizTakenArr
+import firebase from "../Config/firebase";
+import { currQuizObj, currQuizTitle, startQuiz } from "../store/actions"; //quizTakenArr
 
 class QuizDetails extends Component {
   constructor(props) {
@@ -38,10 +39,14 @@ class QuizDetails extends Component {
   }
 
   startQuiz(title) {
+    console.log(this.props.selectedQuiz);
+
     this.setState({ startQuiz: true });
     // localStorage.setItem("startQuiz", true);
     this.setState({ currQuizTitle: title });
+
     this.props.currQuizTitle(title);
+    this.props.startQuiz(title);
   }
 
   checkKey() {
@@ -70,6 +75,8 @@ class QuizDetails extends Component {
             quizTaken = JSON.stringify(quizTaken);
             // localStorage.setItem("quizTaken", quizTaken);
             // this.props.quizTakenArr(quizTaken);
+            firebase.setQuizTaken(this.props.selectedQuiz.id);
+
             break;
           } else {
             // alert("invalid key entered");
@@ -101,8 +108,9 @@ class QuizDetails extends Component {
   renderQuizDetails() {
     console.log(this.props);
     let currentQuizObj = this.props.selectedQuiz;
+
     const currentQuizArr = [];
-    console.log(currentQuizArr);
+
     currentQuizArr.push(currentQuizObj);
     const styles = { backgroundColor: "#13A89E", color: "white" };
     // const quizTaken = JSON.parse(localStorage.getItem("quizTaken")) || [];
@@ -260,6 +268,9 @@ const mapDispatchToProps = dispatch => {
     },
     currQuizTitle: data => {
       dispatch(currQuizTitle(data));
+    },
+    startQuiz: data => {
+      dispatch(startQuiz(data));
     }
     // quizTakenArr: data => {
     //   dispatch(quizTakenArr(data));

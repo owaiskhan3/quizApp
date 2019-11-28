@@ -8,11 +8,7 @@ export {
   getAssignQuizes // updateQuizes
 } from "./loadQuiz";
 
-export {
-  add,
-  startQuiz,
-  currQuizObj,
-  currQuizTitle // quizTakenArr
-} from "./quizDetails";
+export { add, startQuiz, currQuizObj, currQuizTitle } from // quizTakenArr
+"./quizDetails";
 
 export { quizTakenAction, incIndex, finalScore } from "./quizPage";

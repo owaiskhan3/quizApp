@@ -201,31 +201,163 @@ const getUsers = async () => {
     });
   return usersData;
 };
-// console.log(users);
-// const userData = await users.doc.data();
-// console.log("users=>", userData);
+
+//when assigned quiz was an array
+
+// const assignQuizToUser = async (quizId, user) => {
+//   // console.log(quizId + "assign to ");
+//   // console.log(user);
+
+//   let userAssign = await firebase
+//     .firestore()
+//     .collection("users")
+//     .doc(user.uid)
+//     .get();
+
+//   // console.log(userAssign.data().assignedQuiz);
+
+//   let quizArr = userAssign.data().assignedQuiz;
+
+//   let val = quizArr.filter(quiz => quiz.quizId === quizId);
+
+//   console.log(val.length);
+
+//   if (val.length === 1) {
+//     Swal.fire("Oops..", "Quiz Already Assigned..", "error");
+//   } else {
+//     await firebase
+//       .firestore()
+//       .collection("users")
+//       .doc(user.uid)
+//       .set(
+//         {
+//           assignedQuiz: firebase.firestore.FieldValue.arrayUnion({
+//             quizId,
+//             quizTaken: false
+//           })
+//         },
+//         { merge: true }
+//       );
+
+//     Swal.fire(
+//       "Quiz Assign Successfully",
+//       `${quizId} assign to ${user.userName}`,
+//       "success"
+//     );
+//   }
 // };
 
 const assignQuizToUser = async (quizId, user) => {
-  console.log(quizId + "assign to ");
+  console.log(quizId);
   console.log(user);
+
+  let userAssign = await firebase
+    .firestore()
+    .collection("users")
+    .doc(user.uid)
+    .get();
+
+  // console.log(userAssign.data());
+
+  let quizAssigned = userAssign.data().quizAssigned;
+
+  console.log(quizAssigned);
+
+  // quizAssigned = {
+  //   [quizId]: quizId,
+  //   quizTaken: false
+  // };
+  // console.log(quizAssigned);
+
+  let isAlready = await firebase
+    .firestore()
+    .collection("users")
+    .doc(user.uid)
+    .get()
+    .then(quizAssigned => {
+      return quizAssigned.data().quizAssigned;
+    });
+
+  console.log(isAlready);
+
+  let keys = Object.keys(isAlready);
+  // console.log(keys);
+
+  let key = keys.find(key => key == quizId);
+
+  // console.log(key);
+
+  if (key == undefined) {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .set(
+        {
+          quizAssigned: {
+            [quizId]: {
+              quizId,
+              quizTaken: false,
+              finalScore: null
+            }
+          }
+        },
+        { merge: true }
+      );
+    Swal.fire(
+      "Quiz Assign Successfully",
+      `${quizId} assign to ${user.userName}`,
+      "success"
+    );
+  } else {
+    Swal.fire("Oops..", "Quiz Already Assigned..", "error");
+  }
+};
+
+const setQuizTaken = async id => {
+  console.log(id);
+
+  let userId = await firebase
+    .firestore()
+    .collection("currUser")
+    .doc("uid")
+    .get();
+  userId = await userId.data().userId;
+  console.log(userId);
+
+  await firebase
+    .firestore()
+    .collection("quizId")
+    .doc("quizId")
+    .set({ quizId: id });
+
+  let quizId = await firebase
+    .firestore()
+    .collection("users")
+    .doc(userId)
+    .get();
+
+  console.log(quizId.data().quizAssigned[id]);
+  let obj = quizId.data().quizAssigned;
+
+  obj[id].quizTaken = true;
+
+  console.log(obj);
 
   await firebase
     .firestore()
     .collection("users")
-    .doc(user.uid)
+    .doc(userId)
     .set(
       {
-        assignedQuiz: firebase.firestore.FieldValue.arrayUnion({ quizId })
+        quizAssigned: {
+          [id]: {
+            quizTaken: true
+          }
+        }
       },
       { merge: true }
     );
-
-  Swal.fire(
-    "Quiz Assign Successfully",
-    `${quizId} assign to ${user.userName}`,
-    "success"
-  );
 };
 
 export default {
@@ -239,5 +371,6 @@ export default {
   updateQuiz,
   getUsers,
   assignQuizToUser,
-  checkUser
+  checkUser,
+  setQuizTaken
 };

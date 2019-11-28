@@ -121,6 +121,7 @@ class Quizpage extends Component {
         localStorage.setItem("index", 0);
         localStorage.setItem("result", 0);
         localStorage.setItem("finalScore", finalScore);
+
         this.props.finalScore(finalScore);
         this.setState({ finalScore, index });
       }
