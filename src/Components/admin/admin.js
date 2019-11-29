@@ -81,34 +81,65 @@ class admin extends Component {
 
   renderUserList = () => {
     console.log(this.state.users);
-
+    console.log(this.state.id);
+    let userlists = [];
+    this.state.users.filter(user =>
+      Object.keys(user.quizAssigned || {}).map(
+        key =>
+          parseFloat(key) === this.state.id
+            ? userlists.push(user.uid)
+            : console.log("no match")
+        // console.log(key)
+      )
+    );
+    console.log(userlists);
     {
       const userList = this.state.users
         ? this.state.users.map((user, index) => {
-            if (user.userType == "user") {
-              return (
-                <div key={index} style={{ margin: "10px" }}>
-                  <li style={{ listStyleType: "none" }}>
-                    <div>
-                      {`UserID:${user.uid},
+            console.log(user);
+            if (!userlists.includes(user.uid)) {
+              if (user.userType == "user") {
+                return (
+                  <div key={index} style={{ margin: "10px" }}>
+                    <li style={{ listStyleType: "none" }}>
+                      <div>
+                        {`
                       UserName:${user.userName},
                       Email:${user.email}`}
-                      {console.log(this.state.id)}
-                      <button
-                        className="btn waves-effect waves-light pink"
-                        type="submit"
-                        style={{ margin: "0px 10px" }}
-                        onClick={() =>
-                          // console.log(this.state.id, " quiz assign to ", user)
-                          firebase.assignQuizToUser(this.state.id, user)
-                        }
-                      >
-                        Assign Quiz
-                      </button>
-                    </div>
-                  </li>
-                </div>
-              );
+                        {console.log(this.state.id)}
+                        <button
+                          className="btn waves-effect waves-light pink"
+                          type="submit"
+                          style={{ margin: "0px 10px" }}
+                          onClick={() =>
+                            // console.log(this.state.id, " quiz assign to ", user)
+                            firebase.assignQuizToUser(this.state.id, user)
+                          }
+                        >
+                          Assign Quiz
+                        </button>
+                      </div>
+                    </li>
+                  </div>
+                );
+              }
+            } else {
+              console.log(user.quizAssigned[this.state.id]);
+
+              if (
+                user.quizAssigned[this.state.id].finalScore ||
+                user.quizAssigned[this.state.id].finalScore == "0"
+              ) {
+                return (
+                  <div key={Math.random()}>
+                    <h3>Quiz id {user.quizAssigned[this.state.id].quizId}</h3>
+                    <h1>
+                      Marks Obtained:
+                      {user.quizAssigned[this.state.id].finalScore}
+                    </h1>
+                  </div>
+                );
+              }
             }
           })
         : null;
