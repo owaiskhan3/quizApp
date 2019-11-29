@@ -75,11 +75,11 @@ export const getAssignQuizes = () => async dispatch => {
   for (let quizIDs in quizData.data().quizAssigned) {
     console.log(quizData.data().quizAssigned[quizIDs]);
     if (quizData.data().quizAssigned[quizIDs] !== undefined) {
-      // if (quizData.data().quizAssigned[quizIDs].quizTaken === false) {
-      // console.log(quizData.data().quizAssigned[quizIDs]);
-      // console.log("Not taken Quiz");
-      quizIDsArr.push(quizData.data().quizAssigned[quizIDs].quizId);
-      // }
+      if (quizData.data().quizAssigned[quizIDs].quizTaken === false) {
+        // console.log(quizData.data().quizAssigned[quizIDs]);
+        // console.log("Not taken Quiz");
+        quizIDsArr.push(quizData.data().quizAssigned[quizIDs].quizId);
+      }
     } else {
       setTimeout(() => {
         Swal.fire("Warning", "No Quiz Assigned Yet", "warning");
