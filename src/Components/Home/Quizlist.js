@@ -59,7 +59,7 @@ class Quizlist extends Component {
         }
       } else {
         setTimeout(() => {
-          Swal.fire("Warning", "No Quiz Assigned Yet", "warning");
+          Swal.fire("Warning", "No Quiz Given Yet", "warning");
         }, 2000);
       }
     }
