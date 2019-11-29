@@ -3,6 +3,7 @@ import "./Quizlist.css";
 import { connect } from "react-redux";
 import firebase from "firebase";
 import Swal from "sweetalert2";
+import loader from "../../logo/loader.gif";
 
 import {
   loadQuiz,
@@ -18,7 +19,8 @@ class Quizlist extends Component {
 
   state = {
     givenQuiz: [],
-    givenQuizResult: {}
+    givenQuizResult: {},
+    loading: true
   };
 
   back = () => {
@@ -67,8 +69,17 @@ class Quizlist extends Component {
     console.log(quizIDsArr);
     let quizId = quizIDsArr[0];
 
+    let givenQuizArr = [];
+
+    quizIDsArr.map(quizIDs => {
+      givenQuizArr.push(quizData.data().quizAssigned[quizIDs]);
+    });
+
+    console.log(givenQuizArr);
+
     console.log(quizData.data().quizAssigned[quizId]);
-    this.setState({ givenQuizResult: quizData.data().quizAssigned[quizId] });
+    // this.setState({ givenQuizResult: quizData.data().quizAssigned[quizId] });
+    this.setState({ givenQuizResult: givenQuizArr });
 
     // await firebase.firestore().collection();
 
@@ -92,6 +103,7 @@ class Quizlist extends Component {
         console.log(quiz);
         this.setState({ givenQuiz: quiz });
       });
+    this.setState({ loading: false });
   };
 
   renderGivenQuizes = () => {
@@ -112,7 +124,7 @@ class Quizlist extends Component {
         </div>
         {givenQuiz.map((items, indx) => {
           console.log(items);
-          if (items.id === givenQuizResult.quizId) {
+          if (items.id === givenQuizResult[indx].quizId) {
             return (
               <div className="flip-card" key={indx}>
                 <div className="flip-card-inner">
@@ -127,12 +139,12 @@ class Quizlist extends Component {
                     </p>
 
                     <span>
-                      {givenQuizResult.finalScore >=
+                      {givenQuizResult[indx].finalScore >=
                       items.quizOne.passingScore ? (
                         <h4>
                           <b>Your Score:</b>
                           <span style={{ color: "green" }}>
-                            {givenQuizResult.finalScore}
+                            {givenQuizResult[indx].finalScore}
                           </span>
                           /100
                         </h4>
@@ -140,7 +152,7 @@ class Quizlist extends Component {
                         <h4>
                           <b>Your Score:</b>
                           <span style={{ color: "red" }}>
-                            {givenQuizResult.finalScore}
+                            {givenQuizResult[indx].finalScore}
                           </span>
                           /100
                         </h4>
@@ -234,7 +246,9 @@ class Quizlist extends Component {
 
   render() {
     const { id } = this.props.quizList;
-    return (
+    return this.state.loading ? (
+      <img src={loader} />
+    ) : (
       <div>
         {id === null ? this.renderQuizes() : <QuizDetails back={this.back} />}
       </div>
