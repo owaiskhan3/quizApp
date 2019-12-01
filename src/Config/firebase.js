@@ -99,6 +99,22 @@ async function getQuizes() {
   }
 }
 
+async function getGivenQuiz(quizId) {
+  quizId = quizId.toString();
+  try {
+    var response = await firebase
+      .firestore()
+      .collection("userQuiz")
+      .doc(quizId)
+      .get();
+    console.log(response.data());
+
+    return response.data();
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 async function logOut() {
   try {
     var response = await firebase.auth().signOut();
@@ -372,5 +388,6 @@ export default {
   getUsers,
   assignQuizToUser,
   checkUser,
-  setQuizTaken
+  setQuizTaken,
+  getGivenQuiz
 };

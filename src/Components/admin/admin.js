@@ -57,7 +57,7 @@ class admin extends Component {
           </div>
           <div className="flip-card-back">
             <h3>{items.mainTitle}</h3>
-            <p>This Covers all quizes related to {[items.topic].description}</p>
+            <p>This Covers all quizes related to {items.quizOne.description}</p>
 
             <button
               className="btn waves-effect waves-light purple"
@@ -125,18 +125,52 @@ class admin extends Component {
               }
             } else {
               console.log(user.quizAssigned[this.state.id]);
-
+              let data = new Promise(async (resolve, rej) => {
+                await firebase
+                  .getGivenQuiz(
+                    parseFloat(user.quizAssigned[this.state.id].quizId)
+                  )
+                  .then(res => {
+                    console.log(res);
+                    resolve(res);
+                    return res;
+                  });
+              });
+              data.then(dat => {
+                console.log(dat);
+                return dat;
+              });
+              console.log(data);
               if (
                 user.quizAssigned[this.state.id].finalScore ||
                 user.quizAssigned[this.state.id].finalScore == "0"
               ) {
                 return (
-                  <div key={Math.random()}>
-                    <h3>Quiz id {user.quizAssigned[this.state.id].quizId}</h3>
-                    <h1>
-                      Marks Obtained:
-                      {user.quizAssigned[this.state.id].finalScore}
-                    </h1>
+                  <div
+                    key={Math.random()}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <div class="row">
+                      <div class="m6">
+                        <div class="card blue-grey darken-1">
+                          <div class="card-content white-text">
+                            <span class="card-title">
+                              Quiz id: {user.quizAssigned[this.state.id].quizId}
+                            </span>
+                            <p>User Email: {user.email}</p>
+                            <p>Username: {user.userName}</p>
+                            <p>
+                              Marks Obtained:
+                              {user.quizAssigned[this.state.id].finalScore}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 );
               }
