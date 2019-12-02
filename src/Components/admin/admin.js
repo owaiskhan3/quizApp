@@ -18,7 +18,7 @@ class admin extends Component {
       await firebase.logOut().then(() => {
         localStorage.clear();
         this.props.history.push("/");
-        Swal.fire("Success", "Success fully LoggedOut", "success");
+        Swal.fire("Success", "Successfully LoggedOut", "success");
       });
       // localStorage.path = "/";
     } catch (e) {
@@ -154,11 +154,11 @@ class admin extends Component {
                       justifyContent: "center"
                     }}
                   >
-                    <div class="row">
-                      <div class="m6">
-                        <div class="card blue-grey darken-1">
-                          <div class="card-content white-text">
-                            <span class="card-title">
+                    <div className="row">
+                      <div className="m6">
+                        <div className="card blue-grey darken-1">
+                          <div className="card-content white-text">
+                            <span className="card-title">
                               Quiz id: {user.quizAssigned[this.state.id].quizId}
                             </span>
                             <p>User Email: {user.email}</p>
@@ -171,6 +171,24 @@ class admin extends Component {
                         </div>
                       </div>
                     </div>
+                  </div>
+                );
+              } else if (!user.quizAssigned[this.state.id].quizTaken) {
+                console.log("Show quiz assign but not taken");
+                console.log(user.quizAssigned[this.state.id]);
+                return (
+                  <div key={index} style={{ margin: "10px" }}>
+                    <li style={{ listStyleType: "none" }}>
+                      <div>
+                        {`
+                      UserName:${user.userName},
+                      Email:${user.email}
+                      Quiz-Given:${
+                        user.quizAssigned[this.state.id].quizTaken
+                      } `}
+                        {console.log(this.state.id)}
+                      </div>
+                    </li>
                   </div>
                 );
               }
