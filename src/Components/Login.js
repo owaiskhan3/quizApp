@@ -3,7 +3,6 @@ import Navbar from "./Navbar";
 import Swal from "sweetalert2";
 import { Link as Routerlink, Redirect } from "react-router-dom";
 import firebase from "../Config/firebase";
-import { awaitExpression } from "@babel/types";
 
 class Login extends Component {
   state = {
