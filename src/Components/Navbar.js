@@ -5,7 +5,10 @@ class Navbar extends Component {
   render() {
     return (
       <nav>
-        <div className="nav-wrapper">
+        <div
+          className="nav-wrapper"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
           <a href="/" className="brand-logo">
             Quiz App
           </a>
