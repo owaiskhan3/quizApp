@@ -273,7 +273,7 @@ const assignQuizToUser = async (quizId, user) => {
     .doc(user.uid)
     .get();
 
-  // console.log(userAssign.data());
+  console.log(userAssign.data());
 
   let quizAssigned = userAssign.data().quizAssigned;
 
@@ -296,12 +296,12 @@ const assignQuizToUser = async (quizId, user) => {
 
   console.log(isAlready);
 
-  let keys = Object.keys(isAlready);
-  // console.log(keys);
+  let keys = Object.keys(isAlready || {});
+  console.log(keys);
 
   let key = keys.find(key => key == quizId);
 
-  // console.log(key);
+  console.log(key);
 
   if (key == undefined) {
     await firebase
