@@ -2,7 +2,7 @@
 This project has an admin panel which can make quizes and assign them to users, and a User panel where users can login and give their assign quizzes. Users and admin can also see marks of each Quiz and Student respectively.
 
 Credentials adimin:
-email: admin@gmail.com
+email: 'admin@gmail.com'
 password: 1234556
 
 # For Live Demo 
