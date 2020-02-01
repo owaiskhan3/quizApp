@@ -1,7 +1,7 @@
 # React Quiz App 
 This project has an admin panel which can make quizes and assign them to users, and a User panel where users can login and give their assign quizzes. Users and admin can also see marks of each Quiz and Student respectively.
 
-Credentials adimin:
+Credentials admin:
 email: 'admin@gmail.com'
 password: 1234556
 
