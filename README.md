@@ -3,7 +3,7 @@ This project has an admin panel which can make quizes and assign them to users, 
 
 Credentials admin:
 email: 'admin@gmail.com'
-password: 1234556
+password: 123456
 
 # For Live Demo 
 [Quiz App](https://react-myquiz-app.firebaseapp.com/).
